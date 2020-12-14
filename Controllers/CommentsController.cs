@@ -22,14 +22,56 @@ namespace caint.Controllers
 
         // GET: api/Comments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> Getcomments()
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> Getcomments()
         {
-            return await _context.comments.ToListAsync();
+            return await _context.comments.Select(x => ItemToDTO(x)).ToListAsync();
+        }
+
+        [HttpGet("admin")]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsAdmin()
+        {
+            var commentList = await _context.comments.ToListAsync();
+
+            return commentList;
+        }
+
+        [HttpGet("admin/{id}")]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsAdmin(long id)
+        {
+            var commentList = await _context.comments.ToListAsync();
+
+            List<Comment> returnList = new List<Comment>();
+
+            foreach (Comment singleComment in commentList)
+            {
+                if (singleComment.threadId == id)
+                {
+                    returnList.Add(singleComment);
+                }
+            }
+
+            return returnList;
+        }
+
+        [HttpPost("admin/approve/{id}")]
+        public async Task<IActionResult> PutComment(long id)
+        {
+            var comment = await _context.comments.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            comment.approved = true;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(long id)
+        public async Task<ActionResult<CommentDTO>> GetComment(long id)
         {
             var comment = await _context.comments.FindAsync(id);
 
@@ -38,7 +80,7 @@ namespace caint.Controllers
                 return NotFound();
             }
 
-            return comment;
+            return ItemToDTO(comment);
         }
 
         [HttpGet("thread/{id}")]
@@ -49,7 +91,7 @@ namespace caint.Controllers
 
             foreach (Comment singleComment in comment)
             {
-                if (singleComment.threadId == id)
+                if (singleComment.threadId == id && singleComment.approved)
                 {
                     returnList.Add(singleComment);
                 }
@@ -66,14 +108,14 @@ namespace caint.Controllers
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(long id, Comment comment)
+        public async Task<IActionResult> PutComment(long id, CommentDTO CommentDTO)
         {
-            if (id != comment.id)
+            if (id != CommentDTO.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(comment).State = EntityState.Modified;
+            _context.Entry(CommentDTO).State = EntityState.Modified;
 
             try
             {
@@ -97,12 +139,20 @@ namespace caint.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO commentDTO)
         {
+            var comment = new Comment
+            {
+                approved = false,
+                name = commentDTO.name,
+                body = commentDTO.body,
+                threadId = commentDTO.threadId
+            };
+            
             _context.comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetComment), new { id = comment.id }, comment);
+            return CreatedAtAction(nameof(GetComment), new { id = comment.id }, ItemToDTO(comment));
         }
 
         // DELETE: api/Comments/5
@@ -125,5 +175,14 @@ namespace caint.Controllers
         {
             return _context.comments.Any(e => e.id == id);
         }
+
+        private static CommentDTO ItemToDTO(Comment comment) =>
+        new CommentDTO 
+        {
+            id = comment.id,
+            name = comment.name,
+            body = comment.body,
+            threadId = comment.threadId
+        };
     }
 }
