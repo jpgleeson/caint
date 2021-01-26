@@ -8,6 +8,13 @@ function getItems() {
     .catch(error => console.error('Unable to get comments.', error));
 }
 
+function getThread(threadId) {
+  fetch(uri + "/thread/" + threadId)
+    .then(response => response.json())
+    .then(data => _displayThread(data))
+    .catch(error => console.error('Unable to get comments.', error));
+}
+
 function addItem() {
   const commenterNameTextbox = document.getElementById('commenterName');
   const commentBodyTextbox = document.getElementById('commentBody');
@@ -145,6 +152,39 @@ function _displayItems(data) {
 
     let td7 = tr.insertCell(6);
     td7.appendChild(deleteButton);
+  });
+
+  comments = data;
+}
+
+function _displayThread(data) {
+  const threadBody = document.getElementById('commentThread');
+  threadBody.setAttribute('class', 'commentThread');
+  threadBody.innerHTML = '';
+
+  _displayCount(data.length);
+
+  const button = document.createElement('button');
+
+  var x = 0;
+
+  data.forEach(item => {
+    var commentDiv = document.createElement('div');
+    var commentName = document.createElement('h3');
+    var commentBody = document.createElement('p');
+
+    commentDiv.setAttribute('class', 'comment');
+
+    commentName.setAttribute('class', 'commenterName');
+    commentBody.setAttribute('class', 'commentBody');
+
+    commentName.innerHTML = item.name;
+    commentBody.innerHTML = item.body;
+
+    commentDiv.appendChild(commentName);
+    commentDiv.appendChild(commentBody);
+
+    threadBody.appendChild(commentDiv);
   });
 
   comments = data;

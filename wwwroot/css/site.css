@@ -21,3 +21,28 @@ td {
     border: 1px solid;
     padding: 5px;
 }
+
+.commentThread{
+    background-color: #eeeeee;
+    width: 50%;
+    padding-bottom: 5px;
+}
+
+.comment{
+    border-top: solid;
+    border-color: #dddddd;
+    border-top-width: 1px;
+    padding-left: 2em;
+}
+
+.commenterName
+{
+    margin-bottom: 0%;
+    margin-block-end: 0%;
+}
+
+.commentBody
+{
+    padding-top: 0%;
+    margin-block-start: 0%;
+}
