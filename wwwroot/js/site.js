@@ -113,7 +113,7 @@ function _displayItems(data) {
     let isCompleteCheckbox = document.createElement('input');
     isCompleteCheckbox.type = 'checkbox';
     isCompleteCheckbox.disabled = true;
-    isCompleteCheckbox.checked = item.isComplete;
+    isCompleteCheckbox.checked = item.approved;
 
     let approveButton = button.cloneNode(false);
     approveButton.innerText = 'Approve';
