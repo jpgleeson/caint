@@ -30,6 +30,14 @@ namespace caint
         {
             services.AddDbContext<CommentContext>(opt => opt.UseInMemoryDatabase("caintcomments"));
             services.AddControllers();
+
+            services.AddCors(options =>
+        {
+            options.AddPolicy("ExternalCORS",
+                builder =>
+                {
+                });
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +54,8 @@ namespace caint
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

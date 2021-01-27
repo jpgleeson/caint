@@ -18,12 +18,12 @@ function getThread(threadId) {
 function addItem() {
   const commenterNameTextbox = document.getElementById('commenterName');
   const commentBodyTextbox = document.getElementById('commentBody');
+  const commentThreadId = document.getElementById('threadID').value;
 
   const item = {
-    approved: false,
     name: commenterNameTextbox.value.trim(),
     body: commentBodyTextbox.value.trim(),
-    threadId: 1,
+    threadId: commentThreadId,
   };
 
   fetch(uri, {
@@ -38,6 +38,7 @@ function addItem() {
     .then(() => {
       getItems();
       commenterNameTextbox.value = '';
+      commentBodyTextbox.value = '';
     })
     .catch(error => console.error('Unable to add comment.', error));
 }

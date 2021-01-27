@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Caint admin</title>
     <link rel="stylesheet" href="css/site.css" />
+    <script>document.getElementById('threadID').value='1'</script>
 </head>
 <body>
     <h1>Caint</h1>
@@ -16,6 +17,7 @@
 
     <h3>Comment</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
+    <input type="hidden" id="threadID">
     <input type="text" id="commenterName" placeholder="name"><br><br>
     <input type="textarea" id="commentBody" placeholder="Write here..."><br><br>
     <input type="submit" value="Add">

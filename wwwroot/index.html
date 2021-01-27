@@ -9,6 +9,7 @@
     <h1>Caint</h1>
     <h3>Add</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
+        <input type="hidden" id="threadID">
         <input type="text" id="commenterName" placeholder="name"><br><br>
         <input type="textarea" id="commentBody" placeholder="Write here..."><br><br>
         <input type="submit" value="Add">
@@ -42,6 +43,7 @@
 
     <script src="js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
+        document.getElementById('threadID').value='1';
         getItems();
     </script>
 </body>

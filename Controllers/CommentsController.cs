@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using caint.Models;
 
@@ -84,6 +85,7 @@ namespace caint.Controllers
             return ItemToDTO(comment);
         }
 
+        [EnableCors("ExternalCORS")]
         [HttpGet("thread/{id}")]
         public async Task<ActionResult<IEnumerable<Comment>>> GetCommentThread(long id)
         {
@@ -139,6 +141,7 @@ namespace caint.Controllers
 
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [EnableCors("ExternalCORS")]
         [HttpPost]
         public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO commentDTO)
         {
