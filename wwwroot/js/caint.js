@@ -1,5 +1,37 @@
 const uri = 'api/Comments';
-let todos = [];
+const threadUri = 'api/Threads';
+
+const threadHost = document.location.hostname;
+const threadPath = document.location.pathname;
+
+const thisThread = getThreadId();
+
+function getThreadId()
+{
+  const threadLocation = {
+    hostname: threadHost,
+    path: threadPath,
+  };
+
+  fetch(threadUri, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(threadLocation)
+  })
+    .then(response => response.json())
+    .then(_data => {
+      data = _data;
+      console.log(data);
+      document.getElementById("threadID").value = data;
+      console.log(document.getElementById("threadID").value);
+      return data;
+  })
+    .then(getThread(document.getElementById("threadID").value))
+    .catch(error => console.error('Unable to get thread id.', error));
+}
 
 function getItems() {
   fetch(uri + "/admin")
@@ -8,17 +40,18 @@ function getItems() {
     .catch(error => console.error('Unable to get comments.', error));
 }
 
-function getThread(threadId) {
-  fetch(uri + "/thread/" + threadId)
+function getThread(thread) {
+  fetch(uri + "/thread/" + thread)
     .then(response => response.json())
     .then(data => _displayThread(data))
     .catch(error => console.error('Unable to get comments.', error));
 }
 
-function addItem() {
+async function addItem() {
   const commenterNameTextbox = document.getElementById('commenterName');
   const commentBodyTextbox = document.getElementById('commentBody');
-  const commentThreadId = document.getElementById('threadID').value;
+  var commentThreadId = document.getElementById('threadID').value;;
+  console.log(commentThreadId);
 
   const item = {
     name: commenterNameTextbox.value.trim(),
@@ -36,7 +69,7 @@ function addItem() {
   })
     .then(response => response.json())
     .then(() => {
-      getItems();
+      getThread(commentThreadId);
       commenterNameTextbox.value = '';
       commentBodyTextbox.value = '';
     })

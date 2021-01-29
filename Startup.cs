@@ -29,6 +29,7 @@ namespace caint
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CommentContext>(opt => opt.UseInMemoryDatabase("caintcomments"));
+            services.AddDbContext<ThreadContext>(opt => opt.UseInMemoryDatabase("caintthreads"));
             services.AddControllers();
 
             services.AddCors(options =>
@@ -36,6 +37,10 @@ namespace caint
             options.AddPolicy("ExternalCORS",
                 builder =>
                 {
+                    builder.WithOrigins("http://jpgleeson.com",
+                                        "https://jpgleeson.com",
+                                        "http://www.jpgleeson.com",
+                                        "https://www.jpgleeson.com");
                 });
         });
         }
