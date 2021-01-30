@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Caint admin</title>
-    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/caint.css" />
 </head>
 <body>
     <h1>Caint</h1>
-    <h3>Add</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="hidden" id="threadID">
-        <input type="text" id="commenterName" placeholder="name"><br><br>
-        <input type="textarea" id="commentBody" placeholder="Write here..."><br><br>
-        <input type="submit" value="Add">
-    </form>
 
     <div id="editForm">
         <h3>Edit</h3>
@@ -41,6 +34,6 @@
         <tbody id="comments"></tbody>
     </table>
 
-    <script src="js/caint.js" asp-append-version="true">getItems();</script>
+    <script src="js/caint-admin.js" asp-append-version="true">getItems();</script>
 </body>
 </html>
