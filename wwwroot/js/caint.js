@@ -50,30 +50,40 @@ function getThread(thread) {
 async function addItem() {
   const commenterNameTextbox = document.getElementById('commenterName');
   const commentBodyTextbox = document.getElementById('commentBody');
-  var commentThreadId = document.getElementById('threadID').value;;
+  var commentThreadId = document.getElementById('threadID').value;
   console.log(commentThreadId);
 
-  const item = {
-    name: commenterNameTextbox.value.trim(),
-    body: commentBodyTextbox.value.trim(),
-    threadId: commentThreadId,
-  };
-
-  fetch(uri, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(item)
-  })
-    .then(response => response.json())
-    .then(() => {
-      getThread(commentThreadId);
-      commenterNameTextbox.value = '';
-      commentBodyTextbox.value = '';
+  if (commentBodyTextbox.value.length == 0)
+  {
+    console.log(commentBodyTextbox.value.length);
+    return;
+  }
+  else
+  {
+    const item = {
+      name: commenterNameTextbox.value.trim(),
+      body: commentBodyTextbox.value.trim(),
+      threadId: commentThreadId,
+    };
+  
+    fetch(uri, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
     })
-    .catch(error => console.error('Unable to add comment.', error));
+      .then(response => response.json())
+      .then(() => {
+        getThread(commentThreadId);
+        commenterNameTextbox.value = '';
+        commentBodyTextbox.value = '';
+      })
+      .catch(error => console.error('Unable to add comment.', error));
+  }
+
+  
 }
 
 function deleteItem(id) {
