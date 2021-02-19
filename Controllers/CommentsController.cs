@@ -39,19 +39,11 @@ namespace caint.Controllers
         [HttpGet("admin/{id}")]
         public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsAdmin(long id)
         {
-            var commentList = await _context.comments.ToListAsync();
+            var commentList = await _context.comments.Where(x => x.threadId == id).ToListAsync();
 
-            List<Comment> returnList = new List<Comment>();
+            Console.WriteLine(commentList.Count);
 
-            foreach (Comment singleComment in commentList)
-            {
-                if (singleComment.threadId == id)
-                {
-                    returnList.Add(singleComment);
-                }
-            }
-
-            return returnList;
+            return commentList;
         }
 
         [HttpPost("admin/approve/{id}")]
