@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using caint.Data;
 using caint.Models;
+using Pomelo.EntityFrameworkCore.MySql;
 
 namespace caint
 {
@@ -25,24 +28,48 @@ namespace caint
 
         public IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CommentContext>(opt => opt.UseInMemoryDatabase("caintcomments"));
-            services.AddDbContext<ThreadContext>(opt => opt.UseInMemoryDatabase("caintthreads"));
-            services.AddControllers();
+            //services.AddDbContext<CommentContext>(opt => opt.UseInMemoryDatabase("caintcomments"));
+            //services.AddDbContext<ThreadContext>(opt => opt.UseInMemoryDatabase("caintthreads"));
+
+            //SQLITE
+            services.AddDbContext<caintDBContext>(options => options.UseSqlite(Configuration.GetConnectionString("caintDBContext")));
+
+            /*services.AddDbContextPool<CommentContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(
+                        // Replace with your connection string.
+                        Configuration.GetConnectionString("caintDb"),
+                        // Replace with your server version and type.
+                        // For common usages, see pull request #1233.
+                        new MySqlServerVersion(new Version(8, 0, 21))
+            ));
+
+            services.AddDbContextPool<ThreadContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(
+                        // Replace with your connection string.
+                        Configuration.GetConnectionString("caintDb"),
+                        // Replace with your server version and type.
+                        // For common usages, see pull request #1233.
+                        new MySqlServerVersion(new Version(8, 0, 21))
+            ));*/
+            
+
+            
 
             services.AddCors(options =>
-        {
-            options.AddPolicy("ExternalCORS",
-                builder =>
+            {
+            options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://jpgleeson.com",
-                                        "https://jpgleeson.com",
-                                        "http://www.jpgleeson.com",
-                                        "https://www.jpgleeson.com");
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
-        });
+            });
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +82,8 @@ namespace caint
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseForwardedHeaders();
 
             app.UseHttpsRedirection();
 

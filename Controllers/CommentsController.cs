@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
+using caint.Data;
 using caint.Models;
 
 namespace caint.Controllers
@@ -14,9 +15,9 @@ namespace caint.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly CommentContext _context;
+        private readonly caintDBContext _context;
 
-        public CommentsController(CommentContext context)
+        public CommentsController(caintDBContext context)
         {
             _context = context;
         }
@@ -77,7 +78,7 @@ namespace caint.Controllers
             return ItemToDTO(comment);
         }
 
-        [EnableCors("ExternalCORS")]
+        //[EnableCors]
         [HttpGet("thread/{id}")]
         public async Task<ActionResult<IEnumerable<Comment>>> GetCommentThread(long id)
         {
@@ -133,7 +134,7 @@ namespace caint.Controllers
 
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [EnableCors("ExternalCORS")]
+        //[EnableCors]
         [HttpPost]
         public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO commentDTO)
         {

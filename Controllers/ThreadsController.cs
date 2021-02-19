@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
+using caint.Data;
 using caint.Models;
 
 namespace caint.Controllers
@@ -14,14 +15,22 @@ namespace caint.Controllers
     [ApiController]
     public class ThreadsController : ControllerBase
     {
-        private readonly ThreadContext _context;
+        private readonly caintDBContext _context;
 
-        public ThreadsController(ThreadContext context)
+        public ThreadsController(caintDBContext context)
         {
             _context = context;
         }
 
+        [HttpOptions]
+        public IActionResult PreflightRoute()
+        {
+            Console.WriteLine("preflight");
+            return NoContent();
+        }
+
         // GET: api/threads
+        [EnableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ThreadDTO>>> GetThread(string hostname, string pathname)
         {
@@ -29,6 +38,7 @@ namespace caint.Controllers
         }
 
         // GET: api/threads/5
+        [EnableCors]
         [HttpGet("{id}")]
         public async Task<ActionResult<ThreadDTO>> GetComment(long id)
         {
@@ -44,7 +54,7 @@ namespace caint.Controllers
 
         // POST: api/threads
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [EnableCors("ExternalCORS")]
+        [EnableCors]
         [HttpPost]
         public async Task<long> NewThread(NewThreadDTO newThread)
         {
