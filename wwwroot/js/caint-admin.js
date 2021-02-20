@@ -1,7 +1,7 @@
 const uri = 'api/Comments';
 const threadUri = 'api/Threads';
 
-const threadHost = document.location.hostname;
+const threadHost = "TENANTNAMEHERE";
 const threadPath = document.location.pathname;
 
 getItems();
