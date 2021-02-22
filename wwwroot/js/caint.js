@@ -1,5 +1,5 @@
-const uri = 'api/Comments';
-const threadUri = 'api/Threads';
+const uri = 'https://api.caint.casa/api/Comments';
+const threadUri = 'https://api.caint.casa/api/Threads';
 
 const threadHost = "TENANTNAMEHERE";
 const threadPath = document.location.pathname;
@@ -24,20 +24,11 @@ function getThreadId()
     .then(response => response.json())
     .then(_data => {
       data = _data;
-      console.log(data);
       document.getElementById("threadID").value = data;
-      console.log(document.getElementById("threadID").value);
+      getThread(data);
       return data;
   })
-    .then(getThread(document.getElementById("threadID").value))
     .catch(error => console.error('Unable to get thread id.', error));
-}
-
-function getItems() {
-  fetch(uri + "/admin")
-    .then(response => response.json())
-    .then(data => _displayItems(data))
-    .catch(error => console.error('Unable to get comments.', error));
 }
 
 function getThread(thread) {
@@ -100,39 +91,6 @@ function approveItem(id) {
       })
       .then(() => getItems())
       .catch(error => console.error('Unable to approve comments.', error));
-}
-
-function displayEditForm(id) {
-  const item = todos.find(item => item.id === id);
-  
-  document.getElementById('edit-name').value = item.name;
-  document.getElementById('edit-id').value = item.id;
-  document.getElementById('edit-isComplete').checked = item.isComplete;
-  document.getElementById('editForm').style.display = 'block';
-}
-
-function updateItem() {
-  const itemId = document.getElementById('edit-id').value;
-  const item = {
-    id: parseInt(itemId, 10),
-    isComplete: document.getElementById('edit-isComplete').checked,
-    name: document.getElementById('edit-name').value.trim()
-  };
-
-  fetch(`${uri}/${itemId}`, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(item)
-  })
-  .then(() => getItems())
-  .catch(error => console.error('Unable to update item.', error));
-
-  closeInput();
-
-  return false;
 }
 
 function closeInput() {
