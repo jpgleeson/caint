@@ -145,11 +145,30 @@ namespace caint.Controllers
                 body = commentDTO.body,
                 threadId = commentDTO.threadId
             };
-            
-            _context.comments.Add(comment);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetComment), new { id = comment.id }, ItemToDTO(comment));
+            var thread = await _context.threads.FindAsync(comment.threadId);
+
+            string tenantName = thread.hostname;
+
+            var tenant = _context.tenants.Where(x => x.tenantName == tenantName).FirstOrDefault();
+            if (tenant == null)
+            {
+
+            }
+            else
+            {
+                if (tenant.active)
+                {
+                    //It might be worthwhile putting the acceptance in here so that we catch comments
+                    //for users who's accounts have lapsed, but they just can't approve them from the dashboard.
+                }
+                _context.comments.Add(comment);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetComment), new { id = comment.id }, ItemToDTO(comment));
+            }
+            //Not sure if this is the best response here, as it returns a 404 to the AJAX request, but it's sufficient for now.
+            return NotFound();
         }
 
 
