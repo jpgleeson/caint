@@ -1,5 +1,5 @@
-const uri = 'https://api.caint.casa/api/Comments';
-const threadUri = 'https://api.caint.casa/api/Threads';
+const uri = 'api/Comments';
+const threadUri = 'api/Threads';
 
 const threadHost = "TENANTNAMEHERE";
 const threadPath = document.location.pathname;
