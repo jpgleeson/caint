@@ -7,6 +7,8 @@ namespace caint.Models
         public string hostname { get; set; }
 
         public string path { get; set; }
+
+        public string ownerId { get; set; }
     }
 
     public class ThreadDTO

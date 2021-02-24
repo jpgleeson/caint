@@ -7,5 +7,7 @@ namespace caint.Models
         public string tenantName { get; set; }
 
         public bool active { get; set; }
+
+        public string ownerId { get; set; }
     }
 }

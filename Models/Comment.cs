@@ -12,6 +12,8 @@ namespace caint.Models
 
         public bool approved {  get; set;   }
 
+        public string ownerId { get; set; }
+
     }
 
     public class CommentDTO

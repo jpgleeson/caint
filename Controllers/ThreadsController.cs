@@ -25,7 +25,6 @@ namespace caint.Controllers
         [HttpOptions]
         public IActionResult PreflightRoute()
         {
-            Console.WriteLine("preflight");
             return NoContent();
         }
 
@@ -71,13 +70,23 @@ namespace caint.Controllers
 
             var thread = new Thread{
                 hostname = newThread.hostname,
-                path = newThread.path
+                path = newThread.path,
+                ownerId = getOwner(newThread.hostname)
             };
             
             _context.threads.Add(thread);
             await _context.SaveChangesAsync();
 
             return (ItemToDTO(thread).id);
+        }
+
+        private string getOwner(string tenant)
+        {
+            var tenantOwner = _context.tenants.Where(x => x.tenantName == tenant).FirstOrDefault();
+
+            Console.WriteLine(tenantOwner.ownerId);
+
+            return tenantOwner.ownerId;
         }
 
         private static ThreadDTO ItemToDTO(Thread thread) =>
