@@ -84,9 +84,11 @@ namespace caint.Controllers
         {
             var tenantOwner = _context.tenants.Where(x => x.tenantName == tenant).FirstOrDefault();
 
-            Console.WriteLine(tenantOwner.ownerId);
-
-            return tenantOwner.ownerId;
+            if (tenantOwner != null)
+            {
+                return tenantOwner.ownerId;
+            }
+            return null;
         }
 
         private static ThreadDTO ItemToDTO(Thread thread) =>
