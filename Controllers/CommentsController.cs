@@ -157,6 +157,8 @@ namespace caint.Controllers
             }
             else
             {
+                comment.ownerId = tenant.ownerId;
+                
                 if (tenant.active)
                 {
                     //It might be worthwhile putting the acceptance in here so that we catch comments
