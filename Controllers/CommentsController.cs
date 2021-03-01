@@ -149,6 +149,7 @@ namespace caint.Controllers
             var thread = await _context.threads.FindAsync(comment.threadId);
 
             string tenantName = thread.hostname;
+            bool noApproval = thread.noApproval;
 
             var tenant = _context.tenants.Where(x => x.tenantName == tenantName).FirstOrDefault();
             if (tenant == null)
@@ -158,6 +159,8 @@ namespace caint.Controllers
             else
             {
                 comment.ownerId = tenant.ownerId;
+
+                comment.approved = noApproval;
                 
                 if (tenant.active)
                 {
