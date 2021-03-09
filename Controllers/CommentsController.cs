@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using caint.Data;
 using caint.Models;
+using Ganss.XSS;
 
 namespace caint.Controllers
 {
@@ -138,11 +139,12 @@ namespace caint.Controllers
         [HttpPost]
         public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO commentDTO)
         {
+            var sanitizer = new HtmlSanitizer();
             var comment = new Comment
             {
                 approved = false,
                 name = commentDTO.name,
-                body = commentDTO.body,
+                body = sanitizer.Sanitize(commentDTO.body),
                 threadId = commentDTO.threadId
             };
 
