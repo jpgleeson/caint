@@ -68,6 +68,11 @@ async function addItem() {
       .then(response => response.json())
       .then(() => {
         getThread(commentThreadId);
+
+        var unapprovedMarker = document.createElement('div');
+        unapprovedMarker.setAttribute('class', 'comment unapproved');
+        unapprovedMarker.innerHTML = 'Your comment has been submitted. It may require approval from the site admin before showing up.';
+
         commenterNameTextbox.value = '';
         commentBodyTextbox.value = '';
       })

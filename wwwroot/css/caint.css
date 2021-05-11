@@ -117,3 +117,10 @@ button:hover, input[type="submit"]:hover{
     padding-top: 0%;
     margin-block-start: 0%;
 }
+
+.unapproved {
+	background: #f4f4f4;
+	border-bottom: dashed;
+	border-bottom-width: 1px;
+	border-bottom-color: #dddddd;
+}
