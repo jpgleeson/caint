@@ -73,6 +73,9 @@ async function addItem() {
         unapprovedMarker.setAttribute('class', 'comment unapproved');
         unapprovedMarker.innerHTML = 'Your comment has been submitted. It may require approval from the site admin before showing up.';
 
+        var threadBody = document.getElementById('commentThread');
+        threadBody.appendChild(unapprovedMarker);
+
         commenterNameTextbox.value = '';
         commentBodyTextbox.value = '';
       })
