@@ -67,6 +67,9 @@ async function addItem() {
     })
       .then(response => response.json())
       .then(() => {
+        addPlaceholderUnapproved();
+      })
+      .then(() => {
         getThread(commentThreadId);
 
         var unapprovedMarker = document.createElement('div');
@@ -109,6 +112,33 @@ function _displayCount(itemCount) {
   const name = (itemCount === 1) ? 'comment' : 'comments';
 
   document.getElementById('counter').innerText = `${itemCount} ${name}`;
+}
+
+function addPlaceholderUnapproved(){
+    var threadBody = document.getElementById('commentThread');
+    var commenterNameTextbox = document.getElementById('commenterName');
+    var commentBodyTextbox = document.getElementById('commentBody');
+    var commentDiv = document.createElement('div');
+    var commentName = document.createElement('h3');
+    var commentBody = document.createElement('p');
+    var unapprovedMarker = document.createElement('div');
+
+    commentDiv.setAttribute('class', 'comment unapproved');
+
+    commentName.setAttribute('class', 'commenterName');
+    commentBody.setAttribute('class', 'commentBody');
+    unapprovedMarker.setAttribute('class', 'marker');
+
+    commentName.innerHTML = commenterNameTextbox.value;
+    commentBody.innerHTML = commentBodyTextbox.value;
+
+    unapprovedMarker.innerHTML = "unapproved";
+
+    commentDiv.appendChild(unapprovedMarker);
+    commentDiv.appendChild(commentName);
+    commentDiv.appendChild(commentBody);
+
+    threadBody.appendChild(commentDiv);
 }
 
 function _displayThread(data) {
