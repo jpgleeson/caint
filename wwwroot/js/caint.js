@@ -101,8 +101,6 @@ function approveItem(id) {
       .catch(error => console.error('Unable to approve comments.', error));
 }
 
-var sanitizeHTML = function (str) { return str.replace(/[^\w. ]/gi, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); };
-
 function closeInput() {
   document.getElementById('editForm').style.display = 'none';
 }
@@ -134,8 +132,8 @@ function _displayThread(data) {
     commentName.setAttribute('class', 'commenterName');
     commentBody.setAttribute('class', 'commentBody');
 
-    commentName.innerHTML = sanitizeHTML(item.name);
-    commentBody.innerHTML = sanitizeHTML(item.body);
+    commentName.innerHTML = item.name;
+    commentBody.innerHTML = item.body;
 
     commentDiv.appendChild(commentName);
     commentDiv.appendChild(commentBody);
