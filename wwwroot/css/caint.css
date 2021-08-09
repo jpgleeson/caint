@@ -123,4 +123,13 @@ button:hover, input[type="submit"]:hover{
 	border-bottom: dashed;
 	border-bottom-width: 1px;
 	border-bottom-color: #dddddd;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-right: 1em;
+}
+
+.marker {
+	color: #4f4f4f;
+	font-size: 0.8em;
+	float: right;
 }
