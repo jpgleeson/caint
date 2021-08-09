@@ -143,7 +143,7 @@ namespace caint.Controllers
             var comment = new Comment
             {
                 approved = false,
-                name = commentDTO.name,
+                name = sanitizer.Sanitize(commentDTO.name),
                 body = sanitizer.Sanitize(commentDTO.body),
                 threadId = commentDTO.threadId
             };
